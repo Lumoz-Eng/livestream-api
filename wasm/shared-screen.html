@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="bulma-0.9.0/css/bulma.min.css">
+    <script src="wasm_exec.js"></script>
+  </head>
+  <body style="background-color:#f7f7f7;min-height: 100%;">
+     <h1 class="title">Screen Shared from User</h1>
+     <canvas id="canvas" width="1920" height="1080"></canvas>
+    
+     <script src="jquery.3.4.1.min.js"></script>
+
+  <!-- ============================================================== -->
+  <!-- Load GO WASM-->
+  <!-- ============================================================== -->
+  <script type="text/javascript">
+
+    function fetchAndInstantiate(url, importObject) {
+      return fetch(url).then(response =>
+        response.arrayBuffer()
+      ).then(bytes =>
+        WebAssembly.instantiate(bytes, importObject)
+      ).then(results =>
+          results.instance
+      );
+    }
+
+     var go = new Go();
+     var mod = fetchAndInstantiate("main.wasm", go.importObject);
+
+     window.onload = function() {
+       mod.then(function(instance) {
+        go.run(instance);
+       });
+     }
+
+  </script>
+  
+  </body>
+</html>

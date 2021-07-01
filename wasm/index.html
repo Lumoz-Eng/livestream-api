@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>How To Share Screen</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="bulma-0.9.0/css/bulma.min.css" />
+  </head>
+  <body style="background-color: f7f7f7; min-height: 100%">
+    <div class="container" style="height: 100vh; width: 100%; padding: 50px">
+      <div
+        style="width: 800px; margin: auto; text-align: center; padding: 20px"
+      >
+        <h1 class="title">Lumoz Live Screen Share</h1>
+      </div>
+      <div
+        style="
+          background-color: #e3dacc;
+          padding: 30px;
+          width: 300px;
+          margin: auto;
+          text-align: center;
+        "
+      >
+        <div class="control">
+          <button class="button is-link btnStartSharing">
+            Start Sharing Screen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="jquery.3.4.1.min.js"></script>
+
+    <script type="text/javascript">
+      var baseurl = 'http://localhost:8080/'
+      var gStillRequesting = false
+
+      $(document).ready(function () {
+        $('.btnStartSharing').click(function () {
+          if (gStillRequesting) {
+            return
+          }
+
+          gStillRequesting = true
+
+          $.ajax({
+            url: baseurl + 'start-sharing',
+            type: 'GET',
+          })
+            .done(function (response) {
+              gStillRequesting = fasle
+              console.log('Server response', response) //we will not be displaying the response from the server. we just want to see it in the console
+            })
+            .fail(function (xhr, status) {
+              gStillRequesting = false
+              console.log('Error while requesting page', status, xhr)
+            })
+        })
+      })
+    </script>
+  </body>
+</html>
